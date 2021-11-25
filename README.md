@@ -12,7 +12,7 @@ _Learn how to use the card element alongside the payment element._
 Clone this repository:
 
 ```sh
-git clone 
+git clone git@github.com:ejanicas-stripe/multi-elements.git
 ```
 
 1. Confirm `.env` configuration
@@ -24,21 +24,23 @@ Ensure the API keys are configured in `.env` in this directory. It should includ
 STRIPE_PUBLISHABLE_KEY=pk_test...
 STRIPE_SECRET_KEY=sk_test...
 
-# Required to verify signatures in the webhook handler.
-# See README on how to use the Stripe CLI to test webhooks
-STRIPE_WEBHOOK_SECRET=whsec_...
-
 # Path to front-end implementation
 STATIC_DIR=../client
 DOMAIN=http://localhost:4242
 ```
 
+Copy the `.env` file to the server directory:
 
-2. Create and activate a new virtual environment
+```
+cp .env.example server/.env
+```
+
+2. Create and activate a new virtual environment for the server
 
 **MacOS / Unix**
 
 ```
+cd server
 python3 -m venv env
 source env/bin/activate
 ```
@@ -46,6 +48,7 @@ source env/bin/activate
 **Windows (PowerShell)**
 
 ```
+cd server
 python3 -m venv env
 .\env\Scripts\activate.bat
 ```
@@ -72,7 +75,13 @@ $env:FLASK_APP=“server.py"
 python3 -m flask run --port=4242
 ```
 
-5. Go to `localhost:4242` in your browser to see the demo
+5. Open a new terminal tab on the client folder and launch an http server:
+
+```
+python -m http.server
+```
+
+6. Go to `localhost:8000` in your browser to see the demo
 
 ---
 ## FAQ

@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', async () => {
   // Load the publishable key from the server. The publishable key
   // is set in your .env file.
-  const {publishableKey} = await fetch('http://127.0.0.1:4242/config').then((r) => r.json());
+  const {publishableKey} = await fetch(DOMAIN + '/config').then((r) => r.json());
   if (!publishableKey) {
     addMessage(
       'No publishable key returned from the server. Please check `.env` and try again'
@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Make a call to the server to create a new
     // payment intent and store its client_secret.
     const {error: backendError, clientSecret} = await fetch(
-      'http://127.0.0.1:4242/create-payment-intent',
+      DOMAIN + '/create-payment-intent',
       {
         method: 'POST',
         headers: {
