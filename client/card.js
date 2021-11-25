@@ -1,7 +1,9 @@
 document.addEventListener('DOMContentLoaded', async () => {
   // Load the publishable key from the server. The publishable key
   // is set in your .env file.
-  const {publishableKey} = await fetch(DOMAIN + '/config').then((r) => r.json());
+  const {publishableKey} = await fetch(DOMAIN + '/config').then((r) =>
+    r.json()
+  );
   if (!publishableKey) {
     addMessage(
       'No publishable key returned from the server. Please check `.env` and try again'
@@ -17,10 +19,23 @@ document.addEventListener('DOMContentLoaded', async () => {
       fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif',
       fontSmoothing: 'antialiased',
       color: '#0A2540',
-    }
-  }
+    },
+  };
   var cardNumberElement = elements.create('cardNumber', {
     style: style,
+    showIcon: true,
+  });
+  // Logic to block certain card brands
+  var submitElement = document.getElementById('submit');
+  cardNumberElement.on('change', function (event) {
+    var displayError = document.getElementById('card-errors');
+    if (BLOCKED_BRANDS.includes(event.brand)) {
+      displayError.textContent = 'American Express cards are not supported for this transaction';
+      submitElement.disabled = true;
+    } else {
+      displayError.textContent = '';
+      submitElement.disabled = false;
+    }
   });
   var cardExpiryElement = elements.create('cardExpiry', {
     style: style,
@@ -39,7 +54,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     e.preventDefault();
 
     // Disable double submission of the form
-    if(submitted) { return; }
+    if (submitted) {
+      return;
+    }
     submitted = true;
     form.querySelector('button').disabled = true;
 
